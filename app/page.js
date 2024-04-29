@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
@@ -12,6 +12,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 const LeftVerticalBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const [backgroundColor, setBackgroundColor] = useState('#fff'); // Default background color
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -21,25 +22,19 @@ const LeftVerticalBar = () => {
     setDarkMode(!darkMode);
   };
 
+  useEffect(() => {
+    setBackgroundColor(darkMode ? '#000' : '#fff');
+  }, [darkMode]);
+
   const theme = createTheme({
     palette: {
       mode: darkMode ? 'dark' : 'light',
-      
-      light: {
-        body: '#fff',
-      },
-      dark: {
-        body: '#000',
-      },
     },
   });
 
-
-  document.body.style.backgroundColor = theme.palette[theme.palette.mode].body;
-
   return (
     <ThemeProvider theme={theme}>
-      <main className='flex flex-row'>
+      <main className='flex flex-row' style={{ backgroundColor }}>
         <div className="h-screen bg-[#2d3036] top-0 left-0 flex flex-col items-center justify-between w-16 relative">
           <div>
             <div className="cursor-pointer text-white mt-4 mb-4" onClick={toggleMenu}>
@@ -55,9 +50,9 @@ const LeftVerticalBar = () => {
           </div>
           <div>
             <label className="switch mb-5">
-            <input type="checkbox" onChange={toggleDarkMode} checked={darkMode} />
-            <span className="slider"></span>
-          </label>
+              <input type="checkbox" onChange={toggleDarkMode} checked={darkMode} />
+              <span className="slider"></span>
+            </label>
           </div>
         </div>
         <div>
@@ -66,7 +61,6 @@ const LeftVerticalBar = () => {
               <Dashboard />
             </Collapse>
           </Box>
-          
         </div>
       </main>
     </ThemeProvider>
@@ -74,4 +68,3 @@ const LeftVerticalBar = () => {
 };
 
 export default LeftVerticalBar;
-
